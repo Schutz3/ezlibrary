@@ -190,23 +190,31 @@ if( isset($_POST["addRTDE"]) ) {
         </div>
         <div class="modal-body">
           <form method="post">
+          <fieldset disabled>
             <div class="form-group">
-              <label for="inpName">Name</label>
-              <input type="Name" class="form-control" name="namertd" id="namertd"
-                placeholder="Your Name">
+              <label for="inpName" >Name</label>
+              <input type="Name" class="form-control" name="namertd" id="disabledInput"s
+                placeholder="Book Not Found">
             </div>
+            </fieldset>
+            <fieldset disabled>
             <div class="form-group">
               <label for="inpEmail">Email:</label>
-              <input type="email" class="form-control" name="emailrtd" id="emailrtd"
-                placeholder="Your Email e.g admin@ezlibrary.com">
+              <input id="disabledInput" type="email" class="form-control" name="emailrtd"
+                placeholder="Return To Main Page First">
             </div>
+            </fieldset>
+            <fieldset disabled>
             <div class="form-group">
               <label for="exampleFormControlSelect2">Select A Book</label>
                 <select class="form-control" name="bookrtd" id="bookrtd">
-                    <option>Buku Tidak Ditemukan</option>
+                    <option>404</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-secondary"name="addRTDE" >Back To Main Page</button>
+          </fieldset>
+          <div class="container justify-content-center text-center">
+            <button type="submit" class="btn btn-danger text-center"name="addRTDE" >Back To Main Page</button>
+          </div>
           </form>
         </div>
       </div>
