@@ -12,18 +12,6 @@ $lib = query($sql);
 ?>
 <div class="container justify-content-center">
     <div class="row justify-content-center ">
-
-    <?php if( empty($lib) ) : ?>
-      <div class="col-md2 text-center mt-2 mb-2">
-        <div class="card opacity-1">
-        <div class="tenor-gif-embed" data-postid="22163955" data-share-method="host" data-aspect-ratio="1" data-width="100%"><a href="https://tenor.com/view/404-gif-22163955">404 GIF</a>from <a href="https://tenor.com/search/404-gifs">404 GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
-          <div class="card-body">
-            <h5 class="card-title">Sorry, Book Not Found :(</h5>
-          </div>
-        </div>
-      </div>
-	<?php endif; ?>
-
         <?php $i = 1; ?>
 	      <?php foreach( $lib as $row ) { ?>
 
@@ -68,4 +56,5 @@ $lib = query($sql);
 
     </div>
 </div>
+
 

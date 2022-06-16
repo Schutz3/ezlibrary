@@ -14,6 +14,38 @@ function query($sql) {
 	return $rows;
 }
 
+function addRB($data) {
+	global $conn;
+
+	$name = htmlspecialchars($data["namerb"]);
+	$email = htmlspecialchars($data["emailrb"]);
+	$bookreq = htmlspecialchars($data["bookreq"]);
+
+	$sql = "INSERT INTO reqbook
+				VALUES
+			('', '$name', '$email','$bookreq')";
+
+	mysqli_query($conn, $sql);
+
+	return mysqli_affected_rows($conn);
+}
+
+function addRTD($data) {
+	global $conn;
+
+	$name = htmlspecialchars($data["namerb"]);
+	$email = htmlspecialchars($data["emailrb"]);
+	$bookreq = htmlspecialchars($data["bookreq"]);
+
+	$sql = "INSERT INTO reqbook
+				VALUES
+			('', '$name', '$email','$bookreq')";
+
+	mysqli_query($conn, $sql);
+
+	return mysqli_affected_rows($conn);
+}
+
 
 
 ?>

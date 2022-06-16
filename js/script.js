@@ -30,3 +30,8 @@ myAudio.onplaying = function() {
 myAudio.onpause = function() {
   isPlaying = false;
 };
+
+
+function backToHome(){
+  document.location.href = 'index.php?';
+}

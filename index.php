@@ -13,6 +13,27 @@ if( isset($_GET['cari']) ) {
 } else {
 	$lib = query("select * from lib");
 }
+
+if( isset($_POST["addRB"]) ) {
+	if( addRB($_POST) > 0 ) {
+		echo "<script>
+				alert('Your Request has ben sent to our Librarian!, You Will be redirect to main page');
+				document.location.href = 'index.php';
+			  </script>";
+	} else {
+		echo "<script>
+				alert('OOPS SOMETHING WRONG, We cannot proceed your request :(');
+				document.location.href = '#';
+			  </script>";
+	}
+}
+
+if( isset($_POST["addRTDE"]) ) {
+  echo "<script>
+				document.location.href = 'index.php';
+			  </script>";
+}
+
 ?>
 
 <!doctype html>
@@ -117,9 +138,81 @@ if( isset($_GET['cari']) ) {
         <div class="tenor-gif-embed" data-postid="22163955" data-share-method="host" data-aspect-ratio="1" data-width="100%"><a href="https://tenor.com/view/404-gif-22163955">404 GIF</a>from <a href="https://tenor.com/search/404-gifs">404 GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
           <div class="card-body">
             <h5 class="card-title">Sorry, Book Not Found :(</h5>
+            <p class="card-text">Back to Main Page <a href="index.php">here</a> <br>Or<br> Request to our librarian <a href="#" data-toggle="modal" data-target="#requestB">here</a> </p>
           </div>
         </div>
       </div>
+  <!-- Modal Request Book -->
+  <div class="modal fade" id="requestB" tabindex="-1" role="dialog" aria-labelledby="requestB"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="requestB">Request Book</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            <div class="form-group">
+              <label for="inpName">Name</label>
+              <input type="Name" class="form-control" name="namerb" id="namerb"
+                placeholder="Your Name">
+            </div>
+            <div class="form-group">
+              <label for="inpEmail">Email:</label>
+              <input type="email" class="form-control" name="emailrb" id="emailrb"
+                placeholder="Your Email e.g admin@ezlibrary.com">
+            </div>
+            <div class="form-group">
+              <label for="inpRB">Book you want to request</label>
+              <input type="Name" class="form-control" name="bookreq" id="bookreq"
+                placeholder="I Want Book ......">
+            </div>
+            <button type="submit" class="btn btn-secondary" name="addRB">Request</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Request Book -->
+  <!-- Modal Request TakeDown -->
+<div class="modal fade" id="requestRTD" tabindex="-1" role="dialog" aria-labelledby="requestRTD"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="requestRTD">Request Book Take Down</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            <div class="form-group">
+              <label for="inpName">Name</label>
+              <input type="Name" class="form-control" name="namertd" id="namertd"
+                placeholder="Your Name">
+            </div>
+            <div class="form-group">
+              <label for="inpEmail">Email:</label>
+              <input type="email" class="form-control" name="emailrtd" id="emailrtd"
+                placeholder="Your Email e.g admin@ezlibrary.com">
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect2">Select A Book</label>
+                <select class="form-control" name="bookrtd" id="bookrtd">
+                    <option>Buku Tidak Ditemukan</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-secondary"name="addRTDE" >Back To Main Page</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal Request Take Down -->
 
 	<?php endif; ?>
 
@@ -183,9 +276,52 @@ if( isset($_GET['cari']) ) {
 <!-- Footer -->
 <footer class="page-footer">
   <div class="footer text-center py-3 bg-secondary text-light " bottom=0>
-  2022 <br> <a href="#"><img src="./img/libico.png" width="25" height="25" class="d-inline-block align-bottom" alt="ico"></a> EzLibrary
+  2022 | <a href="#"><img src="./img/libico.png" width="25" height="25" class="d-inline-block align-bottom" alt="ico"></a> EzLibrary <br>
+  If you see a book copyright violation, send a takedown request to our librarian <a id="sickle" href="#" data-toggle="modal" data-target="#requestRTD">Here</a>
   </div>
 </footer>
+
+<!-- Modal Request TakeDown -->
+<div class="modal fade" id="requestRTD" tabindex="-1" role="dialog" aria-labelledby="requestRTD"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="requestRTD">Request Book Take Down</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            <div class="form-group">
+              <label for="inpName">Name</label>
+              <input type="Name" class="form-control" name="namertd" id="namertd"
+                placeholder="Your Name">
+            </div>
+            <div class="form-group">
+              <label for="inpEmail">Email:</label>
+              <input type="email" class="form-control" name="emailrtd" id="emailrtd"
+                placeholder="Your Email e.g admin@ezlibrary.com">
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect2">Select A Book</label>
+                <select class="form-control" name="bookrtd" id="bookrtd">
+                <?php $idb = 1; ?>
+                <?php foreach( $lib as $row ) { ?>
+                    <option>ID: <?= $row["id"]; ?> // Title: <?= $row["judul"]; ?></option>
+                <?php $idb++; ?>
+			          <?php } ?>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-secondary" name="addRTD">Request Take Down</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal Request Take Down -->
+
 </div>
 <!-- Footer -->
   <!-- Optional JavaScript -->
