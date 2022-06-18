@@ -1,4 +1,5 @@
 Live View At:
-dev.farhanoktavian.tech
+
+https://dev.farhanoktavian.tech
 username:farhan
 pass:admin
