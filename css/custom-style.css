@@ -19,6 +19,8 @@ footer {
     background-color: red;
 }
 
+.disclaimer{display: none;}
+
 .page-holder {
     min-height: 100vh;
   }

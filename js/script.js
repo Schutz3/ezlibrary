@@ -1,23 +1,6 @@
-// var container = document.getElementById('container');
-// var cari = document.getElementById('cari');
-// var keyword = document.getElementById('keyword');
-
-// cari.style.display = 'none';
-
-// keyword.addEventListener('keyup', function() {
-// 	var xhr = new XMLHttpRequest();
-// 	xhr.onreadystatechange = function() {
-// 		if( xhr.readyState == 4 && xhr.status == 200 ) {
-// 			container.innerHTML = xhr.responseText;
-// 			spinner.style.display = 'none';
-// 		}
-// 	}
-// 	xhr.open('get', 'cari.php?keyword=' + keyword.value, true);
-// 	xhr.send();
-// });
-
-var myAudio = document.getElementById("myAudio");
-var isPlaying = false;
+let myAudio = document.getElementById("myAudio");
+let isPlaying = false;
+const playPause = document.getElementById("sickle");
 
 function togglePlay() {
   myAudio.volume = 0.1;
@@ -26,12 +9,9 @@ function togglePlay() {
 
 myAudio.onplaying = function() {
   isPlaying = true;
+  playPause.innerHTML = `<i class="bi bi-pause"></i>`;
 };
 myAudio.onpause = function() {
   isPlaying = false;
+  playPause.innerHTML = `<i class="bi bi-play"></i>`;
 };
-
-
-function backToHome(){
-  document.location.href = 'index.php?';
-}
