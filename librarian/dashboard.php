@@ -200,7 +200,7 @@ if( isset($_POST["update"]) ) {
       <button type="button" class="btn btn-outline-warning btn-sm text-light ml-3 mb-1 mt-1" data-toggle="modal" data-target="#readRT"><i class="bi bi-exclamation-triangle-fill"></i> Report (<?= $t - 1; ?>)</button>
       </ul>
       <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" name="keyword" id="keyword" placeholder="Find a Book" autocomplete="off" id="keyword" aria-label="Search">
+        <input class="form-control mr-sm-2" type="search" name="keyword" id="keyword" placeholder="Find a Book" autocomplete="off" id="keyword" aria-label="Search" required>
         <button class="btn btn-success btn-sm ml-3 mb-1 mt-1" type="Submit" name="cari" id="cari"><i class="bi bi-search"></i></button>
       </form>
         <div><a class="btn btn-danger btn-sm ml-3 mb-1 mt-1" href="logout.php" role="button" onclick="return confirm('Are You Sure Want To Logout?');"><i class="bi bi-arrow-left-square"></i> Logout</a></div>
