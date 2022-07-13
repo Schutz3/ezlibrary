@@ -1,7 +1,5 @@
-Live View At:
+#E-Library
 
-https://dev.farhanoktavian.tech
+Web Based Library
 
-username: farhan
-
-pass:admin
+Using PHP & Bootstrap Framework
