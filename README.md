@@ -2,4 +2,20 @@
 
 Web Based Library
 
-Using PHP & Bootstrap Framework
+
+## DEMO
+
+[Live App](https://lib.farhanoktavian.tech/)
+
+Username: farhan
+Password: admin
+
+
+## Front End:
+
+Bootstrap Framework
+
+## Back End:
+
+PHP & MySQL
+
