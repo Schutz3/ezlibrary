@@ -5,7 +5,7 @@ Web Based Library
 
 ## DEMO
 
-[Live App](https://elib.farhand.tech/)
+[Live App](https://lib.farhand.tech/)
 
 Username: farhan
 
