@@ -12,7 +12,7 @@ SCREENSHOOT:
 [Live App](https://lib.farhand.tech/)
 
 Username: farhan
-Password: admin
+Password: farhan
 
 ## Front End:
 
