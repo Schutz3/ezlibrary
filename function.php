@@ -1,8 +1,12 @@
 <?php 
-$conn = mysqli_connect("localhost", "root", "","lib" );
+$conn = mysqli_connect("dbserver.crngxvhkbvzx.ap-southeast-3.rds.amazonaws.com", "admin", "Farharbatah0987","elib" );
 
 $sorting = $_GET['order'] ?? 'desc';
 $sorttype = $_GET['type'] ?? 'id';
+$msgg = "S2FtdSBOZ2FwYWluPw==";
+$fdo = 'FdoLib';  
+$own = 'Farhan Dwi O';  
+
 	
 function query($sql) {
 	global $conn;
@@ -222,7 +226,16 @@ function register($data) {
 
 	return mysqli_affected_rows($conn);
 }
-
+if (password_verify($own, '$2y$10$clrLvy3K6uNQ8UbJ1gZ1iu7Iz1W9OOG7ZfXkOwcEh8BW5Pla5izHG')) {
+    $own = $own;
+} else {
+    $own = base64_decode($msgg);  
+}
+if (password_verify($fdo, '$2y$10$zQji5ANK.hMEJ7iSalJm2O3Yg/0AdOaHZrI.qAh4xclFL5uMEFmpe')) {
+    $fdo = $fdo;
+} else {
+    $fdo = base64_decode($msgg);  
+}
 
 
 ?>

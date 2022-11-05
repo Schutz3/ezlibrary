@@ -14,13 +14,14 @@ if( isset($_COOKIE['id']) && isset($_COOKIE['hash']) ) {
 	if( $hash === hash('sha256', $row['username'], false) ) {
 		// set session
 		$_SESSION['username'] = $row['username'];
-		// masuk ke halaman index
+		// masuk ke pg index
 		header('librarian/index.php');
 		exit;
 	}
 
 
 }
+
 
 // cek session
 if( isset($_SESSION['username']) ) {
@@ -62,23 +63,19 @@ if( isset($_POST['login']) ) {
 
 }
 
-$sorting = $_GET['order'] ?? 'desc';
-$sorttype = $_GET['type'] ?? 'id';
-
-
-if( isset($_GET['cari']) ) {
-	$keyword = $_GET['keyword'];
-	$sql = "SELECT * FROM lib
-				WHERE
-			 judul LIKE '%$keyword%' OR
-			 id LIKE '%$keyword%' OR
-			 penulis LIKE '%$keyword%' OR
-			 genre LIKE '%$keyword%'
-			";
-	$lib = query($sql);
-} else {
-	$lib = query("select * from lib ORDER BY ".$sorttype." ".$sorting);
-}
+// if( isset($_GET['search']) ) {
+// 	$search = $_GET['search'];
+// 	$sql = "SELECT * FROM lib
+// 				WHERE
+// 			 judul LIKE '%$search%' OR
+// 			 id LIKE '%$search%' OR
+// 			 penulis LIKE '%$search%' OR
+// 			 genre LIKE '%$search%'
+// 			";
+// 	$lib = query($sql);
+// } else {
+// 	$lib = query("select * from lib ORDER BY ".$sorttype." ".$sorting);
+// }
 
 if( isset($_POST["addRB"]) ) {
 	if( addRB($_POST) === 1 ) {
@@ -132,7 +129,7 @@ if( isset($_POST["returnHome"]) ) {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
-  <title>EzLibrary</title>
+  <title><?php echo $fdo; ?></title>
   <audio id="myAudio" loop preload="auto" control>
       <source src="./img/aud.mp3"  preload="auto">
   </audio>
@@ -146,7 +143,7 @@ if( isset($_POST["returnHome"]) ) {
     <div class="container">
     <a class="navbar-brand disabled" href="./">
       <img src="./img/libico.png" width="30" height="30" class="d-inline-block align-top"alt="">
-      EzLibrary
+      <?php echo $fdo; ?>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="true" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -155,21 +152,22 @@ if( isset($_POST["returnHome"]) ) {
     <div class="navbar-collapse collapse show" id="navbarColor01" >
       <ul class="navbar-nav mr-auto">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
-          Sort By
-        </a>
+        <!--<a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-toggle="dropdown" aria-expanded="false">-->
+        <!--  Sort By-->
+        <!--</a>-->
         
-        <ul class="dropdown-menu " aria-labelledby="navbarScrollingDropdown">
-        <li><a class="dropdown-item" href="?order=desc">Newest</a></li>
-          <li><a class="dropdown-item" href="?order=asc">Oldest</a></li>
-          <li><a class="dropdown-item" href="?type=judul&order=asc">Aa-Zz</a></li>
-          <li><a class="dropdown-item" href="?type=judul&order=desc">Zz-Aa</a></li>
-        </ul>
+        <!--<ul class="dropdown-menu " aria-labelledby="navbarScrollingDropdown">-->
+        <!--<li><a class="dropdown-item" href="?order=desc">Newest</a></li>-->
+        <!--  <li><a class="dropdown-item" href="?order=asc">Oldest</a></li>-->
+        <!--  <li><a class="dropdown-item" href="?type=judul&order=asc">Aa-Zz</a></li>-->
+        <!--  <li><a class="dropdown-item" href="?type=judul&order=desc">Zz-Aa</a></li>-->
+        <!--</ul>-->
       </li>
       </ul>
-      <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" name="keyword" id="keyword" placeholder="Find a Book" autocomplete="off" id="keyword" aria-label="Search" required>
-        <button class="btn btn-success btn-sm ml-3 mb-1 mt-1" type="Submit" name="cari" id="cari"><i class="bi bi-search"></i></button>
+      <form class="form-inline" method="get">
+        <input class="form-control mr-sm-2" type="search" name="search" id="search" placeholder="Find a Book" autocomplete="off" id="search" aria-label="Search" required>
+        <!--<button class="btn btn-success btn-sm ml-3 mb-1 mt-1" type="Submit" name="search" id="search"><i class="bi bi-search"></i></button>-->
+        <input type="submit" class="btn btn-success btn-sm ml-3 mb-1 mt-1" value="Find">
       </form>
         <div><button class="btn btn-danger btn-sm ml-3 mb-1 mt-1" data-toggle="modal" data-target="#Llogin"><i class="bi bi-person-badge"></i> Login</button></div>
     </div>
@@ -237,11 +235,79 @@ if( isset($_POST["returnHome"]) ) {
 <!-- START content -->
   <div class="container justify-content-center">
     <div class="row justify-content-center ">
+            
+        <?php $i = 1; ?>
+        <div id="sort"></div>
+	      <?php
+                            $batas = 6;
+                            $pg = @$_GET['pg'];
+                            if(empty($pg)){
+                                $posisi = 0;
+                                $pg = 1;
+                            }
+                            else{
+                                $posisi = ($pg-1) * $batas;
+                            }
+                            if(isset($_GET['search'])){
+                                $search = $_GET['search'];
+                                $sql="SELECT * FROM lib
+                    				WHERE
+                    			 judul LIKE '%$search%' OR
+                    			 id LIKE '%$search%' OR
+                    			 penulis LIKE '%$search%' OR
+                    			 genre LIKE '%$search%'
+                    			 order by id Desc limit $posisi, $batas";
+                            }else{
+                                $sql="select * from lib ORDER BY id Desc limit $posisi, $batas";
+                            }
+
+                            $lib=mysqli_query($conn, $sql);
+                            while ($row = mysqli_fetch_array($lib)){
+                                ?>
+
+      <div class="col-md-4 text-center mt-2 mb-2">
+        <div class="card opacity-1">
+          <img class="card-img-top coverbook" width="100" src="./src/<?= $row["img"]; ?>" alt="Book<?= $i; ?>WID:<?= $row["id"]; ?>">  
+          <div class="card-body">
+            <h5 class="card-title"><?= $row["judul"]; ?></h5>
+            <p class="card-text">
+            <i class="bi bi-book-fill"></i> ID: <b><?= $row["id"]; ?></b><br>
+              Writer: <b><?= $row["penulis"]; ?></b><br>
+              Genre: <b><?= $row["genre"]; ?></b><br>
+            </p>
+            <button class="btn btn-secondary mt-1" type="submit" data-toggle="modal" data-target="#modalBaca<?= $row["id"]; ?>"><i class="bi bi-book-fill"></i> Read</button>
+            <a href="https://drive.google.com/uc?export=download&id=<?= $row["link"]; ?>" onclick="return confirm('Do You Want To Download This E-Book?');"><button class="btn btn-success mt-1" type="submit"><i class="bi bi-file-earmark-arrow-down-fill"></i>Get</button></a>
+          </div>
+        </div>
+      </div>
+
+    <!-- START Modal View Baca -->
+      <div class="modal fade" id="modalBaca<?= $row["id"]; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+              aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content text-center justify-content-center">
+                  <div class="modal-header ">
+                    <h6 class="modal-title text-center justify-content-center" id="exampleModalLongTitle"><?= $row["judul"]; ?></h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body text-center justify-content-center">
+                    <div class="bacabuku">
+                    <iframe id="myFrame" class="bacabuku" src="https://drive.google.com/file/d/<?= $row["link"]; ?>/preview" allow="autoplay" frameborder="0"></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+      <!-- END Modal View Baca -->
 
         
-<!-- START IF DATA / SEARCH EMPTY -->
+      <?php $i++; ?>
+			<?php } ?>
+			<!-- START IF DATA / SEARCH EMPTY -->
 
-	<?php if( empty($lib) ) : ?>
+	<?php if( $i <= 1 ) : ?>
 
 		<div class="col-md2 text-center mt-2 mb-2">
         <div class="card opacity-1">
@@ -275,7 +341,7 @@ if( isset($_POST["returnHome"]) ) {
             <div class="form-group">
               <label for="inpEmail">Email:</label>
               <input type="email" class="form-control" name="emailrb" id="emailrb"
-                placeholder="Your Email e.g admin@ezlibrary.com" required autocomplete="off">
+                placeholder="Your Email e.g admin@<?php echo $fdo; ?>.com" required autocomplete="off">
             </div>
             <div class="form-group">
               <label for="inpRB">Book you want to request</label>
@@ -337,53 +403,55 @@ if( isset($_POST["returnHome"]) ) {
 
 	<?php endif; ?>
 <!-- END IF DATA / SEARCH EMPTY -->
-            
-        <?php $i = 1; ?>
-        <div id="sort"></div>
-	      <?php foreach( $lib as $row ) { ?>
+			
+			
 
-      <div class="col-md-4 text-center mt-2 mb-2">
-        <div class="card opacity-1">
-          <img class="card-img-top coverbook" width="100" src="./src/<?= $row["img"]; ?>" alt="Book<?= $i; ?>WID:<?= $row["id"]; ?>">  
-          <div class="card-body">
-            <h5 class="card-title"><?= $row["judul"]; ?></h5>
-            <p class="card-text">
-            <i class="bi bi-book-fill"></i> ID: <b><?= $row["id"]; ?></b><br>
-              Writer: <b><?= $row["penulis"]; ?></b><br>
-              Genre: <b><?= $row["genre"]; ?></b><br>
-            </p>
-            <button class="btn btn-secondary mt-1" type="submit" data-toggle="modal" data-target="#modalBaca<?= $row["id"]; ?>"><i class="bi bi-book-fill"></i> Read</button>
-            <a href="https://drive.google.com/uc?export=download&id=<?= $row["link"]; ?>" onclick="return confirm('Do You Want To Download This E-Book?');"><button class="btn btn-success mt-1" type="submit"><i class="bi bi-file-earmark-arrow-down-fill"></i>Get</button></a>
-          </div>
-        </div>
-      </div>
 
-    <!-- START Modal View Baca -->
-      <div class="modal fade" id="modalBaca<?= $row["id"]; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-              aria-hidden="true">
-              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content text-center justify-content-center">
-                  <div class="modal-header ">
-                    <h6 class="modal-title text-center justify-content-center" id="exampleModalLongTitle"><?= $row["judul"]; ?></h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body text-center justify-content-center">
-                    <div class="bacabuku">
-                    <iframe id="myFrame" class="bacabuku" src="https://drive.google.com/file/d/<?= $row["link"]; ?>/preview" allow="autoplay" frameborder="0"></iframe>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-      <!-- END Modal View Baca -->
+                    <?php
+        if(isset($_GET['search'])){
+            $search = $_GET['search'];
+            $query2 = "SELECT * FROM lib
+				WHERE
+			 judul LIKE '%$search%' OR
+			 id LIKE '%$search%' OR
+			 penulis LIKE '%$search%' OR
+			 genre LIKE '%$search%'
+			 order by id Desc";
+        }else{
+            $query2 = "select * from lib ORDER BY id Desc";
+        }
+        $result2 = mysqli_query($conn, $query2);
+        $jmldata = mysqli_num_rows($result2);
+        $jmlpg = ceil($jmldata/$batas);
+        ?>
 
-        
-      <?php $i++; ?>
-			<?php } ?>
+
 
     </div>
+                            <br>
+                        <div class="row justify-content-center">
+                           <ul class="pagination">
+                            <?php
+                            for($i=1;$i<=$jmlpg;$i++){
+                                if ($i !=$pg){
+                                    if(isset($_GET['search'])){
+                                        $search = $_GET['search'];
+                                        echo "<li class='page-item'><a class='page-link' href='?pg=$i&search=$search'>$i</a></li>";
+                                    }else{
+                                        echo "<li class='page-item'><a class='page-link' href='?pg=$i'>$i</a></li>";
+                                    }
+
+                                }else{
+                                    echo "<li class='page-item active'><a class='page-link' href='#'>$i</a></li>";
+                                }
+                            }
+                            ?>
+                        </ul> 
+                        </div>
+                        
+<?php
+mysqli_close($conn);
+                    ?>   
   </div>
 
 <!--END content -->
@@ -397,7 +465,7 @@ if( isset($_POST["returnHome"]) ) {
 <!-- START Footer -->
 <footer class="page-footer">
   <div class="footer text-center py-3 bg-secondary text-light " bottom=0>
-  2022 | <a href="#"><img src="./img/libico.png" width="25" height="25" class="d-inline-block align-bottom" alt="ico"></a> EzLibrary<br>
+  2022 <?php echo $own; ?> | <a href="#"><img src="./img/libico.png" width="25" height="25" class="d-inline-block align-bottom" alt="ico"></a> <?php echo $fdo; ?><br>
   If you see a book copyright/content violation, send a takedown request to our librarian <a id="sickle" href="#" data-toggle="modal" data-target="#requestRTD">Here</a>
   </div>
 </footer>
@@ -425,7 +493,7 @@ if( isset($_POST["returnHome"]) ) {
             <div class="form-group">
               <label for="inpEmail">Email:</label>
               <input type="email" class="form-control" name="emailrtd" id="emailrtd"
-                placeholder="Your Email e.g admin@ezlibrary.com" required autocomplete="off">
+                placeholder="Your Email e.g admin@<?php echo $fdo; ?>.com" required autocomplete="off">
             </div>
             <div class="form-group">
               <label for="exampleFormControlSelect2">Select A Book</label>
