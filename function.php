@@ -1,5 +1,5 @@
 <?php 
-$conn = mysqli_connect("dbserver.crngxvhkbvzx.ap-southeast-3.rds.amazonaws.com", "admin", "Farharbatah0987","elib" );
+$conn = mysqli_connect("localhost", "root", "","elib" );
 
 $sorting = $_GET['order'] ?? 'desc';
 $sorttype = $_GET['type'] ?? 'id';
